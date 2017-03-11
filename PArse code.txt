@@ -1,0 +1,53 @@
+public static String[] readTable(String tableName, String path, String command){
+		int i = 0;
+		String[] read = null;
+		String[] reRead = null;
+		File book = null;
+		if(!path.equals("")){
+			book = new File(path+"/"+tableName);
+		}
+		else{
+			book = new File(tableName);
+		}
+		
+		
+		Scanner reader = null;
+		
+		
+		try{
+			reader = new Scanner(book);
+			while(reader.hasNextLine()){				//FL "i like pie"			//"pie is tasty"
+				read = new String[i+1];					//read has 1 spot			//new read with 2 spots
+				if(read.length==1){						//if read has one spot		//read doesnt have two spots
+					read[i]=reader.nextLine();			//set read[0]="i like pie"	//
+					reRead= new String[i+1];			//reRead has 1 spot			//
+					reRead[i]=read[i];					//reRead[0]= "i like pie"	//
+				}
+				else{
+					for(int n=0;n<i;n++){											//for all but the last lines of read input reRead
+						read[n]=reRead[n];
+					}
+					read[i]=reader.nextLine();										//add pie is tasty to the array
+					reRead=new String[i+1];											// reset reRead
+					for(int n=0;n<read.length;n++){									//load read into reRead
+						reRead[n]=read[n];
+					}
+				}
+				
+				i++;									//i=1						//i=2
+			}
+			reader.close();
+			return read;
+		}catch(Exception e){
+			String message = null;
+			reader.close();
+			sendError("could not read "+tableName, message,command);
+			return read;
+		}
+		
+		
+		
+		
+		
+
+	}
