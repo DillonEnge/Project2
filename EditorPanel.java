@@ -4,8 +4,12 @@ import java.awt.*;
 /**
  * Created by dillonenge on 3/11/17.
  */
-public class EditorPanel extends JPanel {
+public class EditorPanel extends JScrollPane {
+    static JTextArea jta = new JTextArea();
     public EditorPanel(){
-        setPreferredSize(new Dimension(400, 166));
+        setPreferredSize(new Dimension(SwingUI.unitWidth*2, SwingUI.unitHeight/3));
+        jta.setLineWrap(true);
+        setViewportView(jta);
+        createVerticalScrollBar();
     }
 }

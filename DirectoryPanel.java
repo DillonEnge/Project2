@@ -7,6 +7,6 @@ import java.awt.*;
 public class DirectoryPanel extends JPanel{
     public DirectoryPanel(){
         setBackground(Color.cyan);
-        setPreferredSize(new Dimension(200, 500));
+        setPreferredSize(new Dimension(SwingUI.unitWidth, SwingUI.unitHeight));
     }
 }
