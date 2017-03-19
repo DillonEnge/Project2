@@ -2,38 +2,202 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 public class JTreePanel {
 
-	private JPanel jPan = new JPanel();
-	private JTree dir;
-	private String[][] branches = {{"Thin Crust"},{"Cheese","Pep","Bacon"},{"Thick Crust"},{"Ham","Pineapple","Sausage"}}; //edit this String Array and then call the constructor to update 
-																															// the directory
-	// copy pasta to check another run of the loops-- ,{"Cheese Crust"},{"Ham","Pineapple","Sausage"}
-	
-	public JTreePanel(){
-		super();// no idea if this is important or not
+    public static JPanel jPan = new JPanel();
+    private static JTree dir;
+    private static String[][] branches = new String[0][0]; //edit this String Array and then call the constructor to update
+    // the directory
+    public static DefaultMutableTreeNode selectedNode;
+
+
+    public static void makeJTreePanel(){
+
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Database");
+
+        for(int i = 0;i<branches.length;i++){									//first for loop, creates the main branch(Directories)
+            DefaultMutableTreeNode sub1 = new DefaultMutableTreeNode(
+                    new DefaultMutableTreeNode(branches[i][0]));
+
+
+            for(int n=1;n<branches[i].length;n++){								//second loop, creates the second line(Tables)
+                sub1.add(new DefaultMutableTreeNode(branches[i][n]));
+            }
+            root.add(sub1);
+        }
+
+
+        dir = new JTree(root);
+        dir.addTreeSelectionListener(e -> {
+           selectedNode = (DefaultMutableTreeNode)dir.getLastSelectedPathComponent();
+        });
+        dir.setRootVisible(true);
+        dir.setShowsRootHandles(true);
+        jPan.add(dir);
+    }
+
+    public static JPanel getJPanel(){
+
+        return jPan;
+    }
+
+    // Using these we assume it has gotten past the other Error checks and will work
+
+    public static void addDirectory(String dirName){
+        jPan.remove(dir);
+        String[][] temp = new String[branches.length+1][];
+        for(int i = 0; i<branches.length;i++){
+            temp[i] = new String[branches[i].length];
+            for(int n = 0;n<branches[i].length;n++){
+                temp[i][n] = branches[i][n];
+            }
+        }
+        temp[branches.length] = new String[1]; //+1
+        temp[branches.length][0] = dirName;
+        //temp[branches.length][1] = "temp"; // makes it so the node is a folder // if you uncomment this add 1 to temp length
+
+        branches = temp;
+
+        makeJTreePanel();
+
+
+
+
+    }
+
+
+
+
+
+    public static void addTable(String dirName, String tableName){
+        jPan.remove(dir);
+        int[] index = new int[2];
+        for(int i = 0; i<branches.length;i++){
+            if(branches[i][0].equals(dirName)){
+                index[0]=i;
+                index[1]=0;
+            }
+        }
+
+        String[][] temp = new String[branches.length][];
+
+        for(int i=0; i<index[0];i++){
+            temp[i] = new String[branches[i].length];
+            for(int n = 0; n<branches[i].length;n++){
+                temp[i][n] = branches[i][n];
+            }
+        }
+
+        temp[index[0]] = new String[branches[index[0]].length+1];
+        for(int i = 0;i<branches[index[0]].length;i++){
+            temp[index[0]][i]=branches[index[0]][i];
+        }
+        temp[index[0]][branches[index[0]].length]=tableName;
+
+        for(int i = index[0]+1; i<branches.length;i++){
+            temp[i] = new String[branches[i].length];
+            for(int n = 0; n<branches[i].length;n++){
+                temp[i][n] = branches[i][n];
+            }
+        }
+
+        branches = temp;
+
+        makeJTreePanel();
+
+    }
+
+
+
+
+
+    // for this to work the directory must be there
+    public static void removeDirectory(String dirName){
+        jPan.remove(dir);
+        int[] index = new int[2];
+        for(int i = 0; i<branches.length;i++){
+            if(branches[i][0].equals(dirName)){
+                index[0]=i;
+                index[1]=0;
+                break;
+            }
+        }
+        String[][] temp = new String[branches.length-1][];
+
+        for(int i=0; i<index[0];i++){
+            temp[i] = new String[branches[i].length];
+            for(int n = 0; n<branches[i].length;n++){
+                temp[i][n] = branches[i][n];
+            }
+        }
+
+        for(int i = index[0]; i<temp.length;i++){
+            temp[i] = new String[branches[i+1].length];
+            for(int n = 0; n<branches[i+1].length;n++){
+                temp[i][n] = branches[i+1][n];
+            }
+        }
+        branches = temp;
+        makeJTreePanel();
+
+    }
+
+    //what did you do again
+
+    public static void refreshTree(){
+        jPan.remove(dir);
+        makeJTreePanel();
+    }
+
+
+
+    public static void removeTable(String dirName, String tableName){
+        jPan.remove(dir);
+        int[] index = new int[2];
+        for(int i = 0; i<branches.length;i++){
+            if(branches[i][0].equals(dirName)){
+                for(int n = 1;n<branches[i].length;n++){
+                    if(branches[i][n].equals(tableName)){
+                        index[0]=i;
+                        index[1]=n;
+                    }
+                }
+            }
+        }
+        String[][] temp = new String[branches.length][];
+
+        for(int i=0; i<index[0];i++){
+            temp[i] = new String[branches[i].length];
+            for(int n = 0; n<branches[i].length;n++){
+                temp[i][n] = branches[i][n];
+            }
+        }
+
+
+        temp[index[0]] = new String[branches[index[0]].length-1];
+        for(int n = 0;n<index[1];n++){
+            temp[index[0]][n]=branches[index[0]][n];
+        }
+        for(int n = index[1];n<temp[index[0]].length;n++){
+            temp[index[0]][n]=branches[index[0]][n+1];
+        }
+
+
+        for(int i = index[0]+1; i<branches.length;i++){
+            temp[i] = new String[branches[i].length];
+            for(int n = 0; n<branches[i].length;n++){
+                temp[i][n] = branches[i][n];
+            }
+        }
+
+
+
+        branches = temp;
+        makeJTreePanel();
+    }
+}
+/*
+for(int i = 0; i<branches.length;i++){
+	for(int n = 0;n<branches[i].length;n++){
 		
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
-		
-		for(int n = 0;n<branches.length;n=n+2){									//first for loop, creates the main branch(Directories) using the 0,2,4... spaces in the string array
-			DefaultMutableTreeNode sub1 = new DefaultMutableTreeNode(
-				new DefaultMutableTreeNode(branches[n][0]));
-		
-			
-			//add an if statement to check if there are tables in the next part of the array
-			for(int i=0;i<branches[1].length;i++){								//second loop, creates the second line(Tables) using the odd spaces in the array 1,3,5..
-				sub1.add(new DefaultMutableTreeNode(branches[n+1][i]));
-			}
-			root.add(sub1);
-		}
-		
-		
-		dir = new JTree(root);
-		dir.setRootVisible(false);
-		dir.setShowsRootHandles(true);
-		jPan.add(dir);
-	}
-	
-	public JPanel getJPanel(){
-		
-		return jPan;
 	}
 }
+*/

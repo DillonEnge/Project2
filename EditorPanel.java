@@ -7,7 +7,7 @@ import java.awt.*;
 public class EditorPanel extends JScrollPane {
     static JTextArea jta = new JTextArea();
     public EditorPanel(){
-        setPreferredSize(new Dimension(SwingUI.unitWidth*2, SwingUI.unitHeight/3));
+        setPreferredSize(new Dimension((int)(SwingUI.unitWidth*2), (int)(SwingUI.unitHeight/3)));
         jta.setLineWrap(true);
         setViewportView(jta);
         createVerticalScrollBar();

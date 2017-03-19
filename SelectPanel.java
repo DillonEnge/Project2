@@ -6,7 +6,7 @@ import java.awt.*;
  */
 public class SelectPanel extends JScrollPane{
     public SelectPanel(){
-        setPreferredSize(new Dimension(SwingUI.unitWidth*2, SwingUI.unitHeight/3));
+        setPreferredSize(new Dimension((int)(SwingUI.unitWidth*2), (int)(SwingUI.unitHeight/3)));
         JTextArea jta = new JTextArea();
         jta.setEditable(false);
         jta.setLineWrap(true);
