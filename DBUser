@@ -1,0 +1,16 @@
+CREATE DATABASE colleges
+CREATE DATABASE college
+DROP DATABASE colleges
+CREATE TABLE college.student
+CREATE TABLE college.students
+DROP TABLE college.students
+INSERT "John Smith" INTO college.student
+INSERT "Jane Doe" INTO college.student
+INSERT "Justa Beeper" INTO college.student
+INSERT "DOPE" INTO college.students
+INSERT "PEACE OUT" INTO college.students 
+SELECT * FROM college.student WHERE COLUMN = "John Smith"
+DELETE FROM college.students
+DELETE FROM college.students WHERE COLUMN = "Justa Beeper"
+UPDATE college.students SET COLUMN = "The Martian" WHERE COLUMN = "John Smith"
+SELECT * FROM college.student
